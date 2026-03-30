@@ -1,4 +1,4 @@
-package urlshortner;
+package url_shortener;
 
 public class URLMapping {
 

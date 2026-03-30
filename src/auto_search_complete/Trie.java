@@ -56,9 +56,8 @@ class Trie {
         }
     }
 
-
     private class TrieNode{
-        TrieNode[] child;  // Better to use Map over array. I have used array to keep it simple
+        TrieNode[] child;  // Better to use Map over array to allow specialized characters. I have used array to keep it simple
         int frequency;
         boolean isWord;
 

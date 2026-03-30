@@ -1,4 +1,4 @@
-package urlshortner;
+package url_shortener;
 
 import java.util.HashMap;
 import java.util.Map;
