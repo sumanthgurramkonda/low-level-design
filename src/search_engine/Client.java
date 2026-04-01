@@ -25,5 +25,6 @@ public class Client {
             for (Document doc : result) {
                 System.out.println(doc.getContent());
             }
+
     }
 }
