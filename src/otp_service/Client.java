@@ -10,9 +10,10 @@ public class Client {
         OTPService otpService = new OTPService(otpConfiguration);
 
         OTP otp = otpService.generateOTP();
-        System.out.println("Generated OTP: " + otp);
+        System.out.println("Generated OTP: " + otp.getCode());
 
-        boolean isValid = otpService.validateOTP(otp.getCode());
+        boolean isValid;
+        isValid = otpService.validateOTP(otp.getCode());
         System.out.println("Is OTP valid? " + isValid);
         try {
             System.out.println("Waiting for OTP to expire...");
@@ -24,7 +25,7 @@ public class Client {
             throw new RuntimeException(e);
         }
         System.out.println();
-        isValid = otpService.validateOTP(otp.getCode());
-        System.out.println("Is OTP valid after second validation? " + isValid);
+        isValid = otpService.validateOTP (otp.getCode());
+        System.out.println("Is OTP valid after second validation? " + (isValid ? "Yes" : "Expired"));
     }
 }
