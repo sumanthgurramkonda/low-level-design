@@ -19,13 +19,13 @@ public class OTPService {
             String code = generateCode();
 
             OTP otp = new OTP(code, System.currentTimeMillis() + otpConfiguration.getOtpExpirationTime());
-            if (!otpDB.addOTPIfAbsent(otp)) {
+            if (otpDB.addOTPIfAbsent(otp)) {
                 return otp;
             }
         }
     }
 
-    public boolean validateOTP(String inputCode) {
+    public synchronized boolean validateOTP(String inputCode) {
         if (inputCode == null || inputCode.isEmpty()) return false;
 
         OTP otp = otpDB.getOTP(inputCode);

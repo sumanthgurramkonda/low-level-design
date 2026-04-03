@@ -32,24 +32,28 @@ public class OTPDB {
     }
 
     public boolean addOTPIfAbsent(OTP otp) {
-        if(otps.containsKey(otp.getCode())) return false;
-        otps.put(otp.getCode(), otp);
-        queue.add(otp);
-        return true;
+        if (otps.putIfAbsent(otp.getCode(), otp) == null) {
+            queue.add(otp);
+            return true;
+        }
+        return false;
     }
 
     private void removeExpiredOTPs() {
         long now = System.currentTimeMillis();
-        while (!queue.isEmpty() && now > queue.peek().getExpirationTime()) {
-            OTP expiredOtp = queue.poll();
-            if (expiredOtp != null && otps.containsKey(expiredOtp.getCode())) {
-                otps.remove(expiredOtp.getCode());
+        while (true) {
+            OTP otp = queue.peek();
+            if (otp == null || otp.getExpirationTime() > now) {
+                break;
             }
+            System.out.println("Opt expired: " + otp.getCode());
+            queue.poll();
+            otps.remove(otp.getCode());
         }
     }
 
     public OTP getOTP(String code) {
-        return otps.getOrDefault(code,null);
+        return otps.get(code);
     }
 
     public void removeOTP(String code) {
