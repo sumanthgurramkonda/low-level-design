@@ -8,6 +8,7 @@ import parkinglot.model.ParkingSpot;
 import parkinglot.model.Ticket;
 import parkinglot.model.Vehicle;
 import parkinglot.strategy.payment.PaymentStrategy;
+import parkinglot.strategy.pricing.PricingStrategy;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class ParkingLot {
 
     private final Map<Integer, ParkingFloor> floors = new HashMap<>();
     private final Map<String, Ticket> activeTickets = new HashMap<>();
+    private PricingStrategy pricingStrategy;
 
     private ParkingLot() {
     }
@@ -36,12 +38,13 @@ public class ParkingLot {
     }
 
 
-    public void unParkVehicle(String ticketId, LocalDateTime entryTime, PaymentType paymentType) {
+    public void unParkVehicle(String ticketId, LocalDateTime exitTime, PaymentType paymentType) {
         Ticket ticket = activeTickets.get(ticketId);
 
         PaymentStrategy strategy = PaymentStrategyFactory.getPaymentStrategy(paymentType);
         if(strategy != null) {
             PaymentProcessor processor = new PaymentProcessor(strategy);
+            double amount = pricingStrategy.getPrice(ticket.getVehicleType(),ticket.getEntryTime() , exitTime);
             boolean paid = processor.processPayment(ticket,0d);
             if(!paid){
                 System.out.println("Payment failed");
