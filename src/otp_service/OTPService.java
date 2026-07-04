@@ -17,7 +17,6 @@ public class OTPService {
     public OTP generateOTP() {
         while (true) {
             String code = generateCode();
-
             OTP otp = new OTP(code, System.currentTimeMillis() + otpConfiguration.getOtpExpirationTime());
             if (otpDB.addOTPIfAbsent(otp)) {
                 return otp;

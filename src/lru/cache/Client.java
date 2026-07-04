@@ -1,5 +1,7 @@
 package lru.cache;
 
+import lru.cache.strategy.LRUCache;
+
 public class Client {
 
     public static void main(String[] args) {
